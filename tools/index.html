@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDF Toolkit</title>
+  <link rel="stylesheet" href="popup.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Merge, split, and compress PDF files privately in your browser." />
+</head>
+<body>
+  <div class="app">
+    <a href="../index.html" style="display:inline-block;margin-bottom:12px;color:#6b7280;text-decoration:none;font-size:13px">← PDF Toolkit Home</a>
+    <header class="header">
+      <img class="logo" src="icons/icon48.png" alt="" />
+      <div class="header-text">
+        <h1>PDF Toolkit <span id="proTag" class="pro-tag hidden">PRO</span></h1>
+        <p class="subtitle">
+          <span class="lock-dot"></span>
+          Runs entirely in your browser — zero data transfer
+        </p>
+      </div>
+    </header>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="merge">
+        <span class="tab-icon">🧩</span>Merge
+      </button>
+      <button class="tab" data-tab="split">
+        <span class="tab-icon">✂️</span>Split
+      </button>
+      <button class="tab" data-tab="compress">
+        <span class="tab-icon">🗜️</span>Compress
+        <span class="tab-pro-badge">PRO</span>
+      </button>
+    </nav>
+
+    <div id="upsellBanner" class="upsell-banner hidden">
+      <span class="upsell-text" id="upsellText"></span>
+      <button id="upgradeBtn" class="upgrade-btn">Unlock Lifetime · $4.99</button>
+    </div>
+
+    <!-- ============ MERGE ============ -->
+    <section id="panel-merge" class="panel active">
+      <label id="mergeDropzone" class="dropzone" for="mergeFileInput">
+        <span class="dropzone-icon">＋</span>
+        <span class="dropzone-text">Choose or drag PDF files here</span>
+        <input type="file" id="mergeFileInput" accept="application/pdf" multiple hidden />
+      </label>
+
+      <ul id="mergeFileList" class="file-list"></ul>
+      <p class="hint">Drag files to reorder them. Click a file to edit its pages (Pro).</p>
+
+      <button id="mergeBtn" class="action-btn" disabled>
+        <span id="mergeBtnText">Merge PDFs</span>
+      </button>
+    </section>
+
+    <!-- ============ SPLIT ============ -->
+    <section id="panel-split" class="panel">
+      <label id="splitDropzone" class="dropzone" for="splitFileInput">
+        <span class="dropzone-icon">＋</span>
+        <span class="dropzone-text">Choose a single PDF to split</span>
+        <input type="file" id="splitFileInput" accept="application/pdf" hidden />
+      </label>
+
+      <div id="splitEditor" class="split-editor hidden">
+        <p class="split-filename" id="splitFileName"></p>
+        <p class="page-editor-hint" id="splitHint"></p>
+        <div class="page-chips" id="splitChips"></div>
+        <div class="page-chip-actions">
+          <button id="splitSelectAll">Select All</button>
+          <button id="splitSelectNone">Deselect All</button>
+        </div>
+      </div>
+
+      <button id="splitBtn" class="action-btn" disabled>
+        <span id="splitBtnText">Split Selected Pages</span>
+      </button>
+    </section>
+
+    <!-- ============ COMPRESS ============ -->
+    <section id="panel-compress" class="panel">
+      <div id="compressLockedNotice" class="locked-notice hidden">
+        <span class="locked-notice-icon">🔒</span>
+        <p>Compression is a Pro feature. It shrinks file size by re-encoding embedded images at a lower resolution/quality — most effective on scanned or photo-heavy PDFs.</p>
+      </div>
+
+      <div id="compressLevelSelector" class="compress-level-selector">
+        <p class="compress-level-label">Compression strength</p>
+        <div class="compress-level-options">
+          <button class="compress-level-btn" data-level="light">
+            <span class="level-name">Light</span>
+            <span class="level-desc">Best quality</span>
+          </button>
+          <button class="compress-level-btn active" data-level="balanced">
+            <span class="level-name">Balanced</span>
+            <span class="level-desc">Recommended</span>
+          </button>
+          <button class="compress-level-btn" data-level="strong">
+            <span class="level-name">Strong</span>
+            <span class="level-desc">Smallest file</span>
+          </button>
+        </div>
+      </div>
+
+      <label id="compressDropzone" class="dropzone" for="compressFileInput">
+        <span class="dropzone-icon">＋</span>
+        <span class="dropzone-text">Choose a single PDF to compress</span>
+        <input type="file" id="compressFileInput" accept="application/pdf" hidden />
+      </label>
+
+      <div id="compressResult" class="compress-result hidden">
+        <div class="compress-row">
+          <span>Original size</span>
+          <strong id="compressBefore">—</strong>
+        </div>
+        <div class="compress-row">
+          <span>New size</span>
+          <strong id="compressAfter">—</strong>
+        </div>
+        <div class="compress-row compress-savings">
+          <span>Savings</span>
+          <strong id="compressSavings">—</strong>
+        </div>
+      </div>
+      <p class="hint">This re-encodes embedded images at your chosen quality level to shrink the file. "Strong" gives the smallest file but may visibly soften photos — good for scans/passport photos where file size matters most. Text-only PDFs (no embedded images) won't shrink much since there's nothing to compress.</p>
+
+      <button id="compressBtn" class="action-btn" disabled>
+        <span id="compressBtnText">Compress and Download</span>
+      </button>
+    </section>
+
+    <p id="status" class="status"></p>
+
+    <footer class="footer">🔒 100% local processing · No data ever leaves your device</footer>
+  </div>
+
+  <script src="pdf-lib.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
